@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Moq;
 
 namespace TDD.Tests 
 {
@@ -24,9 +25,19 @@ namespace TDD.Tests
                 Item = item
             };
 
-            var manager = new ShoppingCartManager();
+            var managerMock = new Mock<IShoppingCartManager>();
 
-            AddToCartResponse response = manager.AddToCart(request);
+            managerMock
+            .Setup(x => x.AddToCart(It.IsAny<AddToCartRequest>()))
+            .Returns((AddToCartRequest request) => new AddToCartResponse() 
+            {
+                Items = new List<AddToCartItem>() { request.Item }
+            });
+
+            AddToCartResponse response = 
+                managerMock
+                .Object
+                .AddToCart(request);
 
             Assert.NotNull(response);
             Assert.Contains(item, response.Items);

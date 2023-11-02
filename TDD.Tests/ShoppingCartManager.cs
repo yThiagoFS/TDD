@@ -1,6 +1,6 @@
 namespace TDD.Tests
 {
-    public class ShoppingCartManager 
+    public class ShoppingCartManager : IShoppingCartManager
     {
         List<AddToCartItem> _shoppingCart = new();
 
@@ -21,6 +21,11 @@ namespace TDD.Tests
             {
                 Items = _shoppingCart
             };
+        }
+
+        public List<AddToCartItem> GetCart()
+        {
+            return _shoppingCart;
         }
     }
 }
